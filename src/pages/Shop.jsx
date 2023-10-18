@@ -1,15 +1,15 @@
 import Card from '../components/Card';
 import Cart from '../components/Cart';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { DataContext, CartContext } from '../App';
 
-let initialData = null;
 
 function Shop() {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useContext(DataContext);
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useContext(CartContext);
 
   useEffect(() => {
     if (!data) {
@@ -23,7 +23,7 @@ function Shop() {
         })
         .then((json) => {
           setData(json);
-          initialData = json;
+
         })
         .catch((error) => setError(error))
         .finally(() => console.log('finally'));

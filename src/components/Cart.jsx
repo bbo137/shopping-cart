@@ -38,6 +38,9 @@ function Cart(props) {
   );
 }
 
-Cart.propTypes = {};
+Cart.propTypes = {
+  cart: PropTypes.array,
+  deleteFromCart: PropTypes.func,
+};
 
 export default Cart;
