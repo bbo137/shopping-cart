@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import Input from './Input';
 
 function Cart(props) {
   function handleClickDelete(id) {
@@ -9,6 +10,18 @@ function Cart(props) {
     return parseFloat(
       props.cart.reduce((acc, curr) => acc + curr.price * curr.quantity, 0)
     ).toFixed(2);
+  }
+
+  function handleClickDecrease(id) {
+    props.handleAddToCart(id, -1);
+  }
+
+  function handleChange(id, quantity) {
+    props.handleAddToCart(id, quantity, true);
+  }
+
+  function handleClickIncrease(id) {
+    props.handleAddToCart(id, 1);
   }
 
   return (
@@ -23,7 +36,13 @@ function Cart(props) {
             alt=""
           />
           <p>{product.price}</p>
-          <p>{product.quantity}</p>
+          <Input
+            id={product.id}
+            quantity={product.quantity}
+            handleClickDecrease={handleClickDecrease}
+            handleClickIncrease={handleClickIncrease}
+            handleChange={handleChange}
+          ></Input>
           <button
             onClick={() => {
               handleClickDelete(product.id);
@@ -41,6 +60,7 @@ function Cart(props) {
 Cart.propTypes = {
   cart: PropTypes.array,
   deleteFromCart: PropTypes.func,
+  handleAddToCart: PropTypes.func,
 };
 
 export default Cart;
