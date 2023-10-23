@@ -1,4 +1,4 @@
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Cart from './components/Cart';
@@ -11,6 +11,11 @@ function App() {
   const [data, setData] = useState(null);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    setCart(JSON.parse(savedCart));
+  }, []);
 
   function updateQuantity(arr, index, quantity, input) {
     if (isNaN(quantity) || (input && quantity === '')) {
@@ -38,12 +43,14 @@ function App() {
       let product = data.find((product) => product.id === id);
       product = { ...product, quantity: quantity };
       setCart([...cart, product]);
+      localStorage.setItem('cart', JSON.stringify([...cart, product]));
     } else {
       // already has the item
       let newArr = [...cart];
 
       updateQuantity(newArr, index, quantity, input);
       setCart(newArr);
+      localStorage.setItem('cart', JSON.stringify(newArr));
     }
   }
 
@@ -51,6 +58,7 @@ function App() {
     //add confirm?
     const newArr = cart.filter((product) => product.id !== id);
     setCart(newArr);
+    localStorage.setItem('cart', JSON.stringify(newArr));
   }
 
   return (
