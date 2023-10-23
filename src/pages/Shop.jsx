@@ -1,6 +1,16 @@
 import Card from '../components/Card';
+import OptionSelector from '../components/OptionSelector';
 import { useContext, useEffect, useState } from 'react';
 import { DataContext, CartContext } from '../App';
+
+const options = [
+  'None',
+  'Name',
+  'Price: Low to High',
+  'Price: High to Low',
+  'Rating: High to Low',
+  'Rating: Low to High',
+];
 
 function Shop() {
   const [data, setData] = useContext(DataContext);
@@ -8,6 +18,12 @@ function Shop() {
   const [error, setError] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [loaded, setLoaded] = useState(false);
+
+  const [selectedCategory, setSelectedCategory] = useState('None');
+
+  const [selectedSortOption, setSelectedSortOption] = useState(options[0]);
+
+  const [dataFiltered, setDataFiltered] = useState(data);
 
   const { handleAddToCart } = useContext(CartContext);
 
@@ -27,11 +43,54 @@ function Shop() {
             quantity: 1,
           }));
           setData(updatedJson);
+          setDataFiltered(updatedJson);
         })
         .catch((error) => setError(error))
-        .finally(() => console.log('finally'));
+        .finally(() => {
+          console.log('finally');
+        });
     }
   });
+
+  useEffect(() => {
+    if (!data) return;
+    let filteredData = [...data];
+    if (selectedCategory !== 'None') {
+      filteredData = filteredData.filter(
+        (product) => product.category === selectedCategory.toLowerCase()
+      );
+    }
+    switch (selectedSortOption) {
+      case options[0]:
+        filteredData = [...filteredData].sort((a, b) => a.id - b.id);
+        break;
+      case options[1]:
+        filteredData = [...filteredData].sort((a, b) =>
+          a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+        );
+        break;
+      case options[2]:
+        filteredData = [...filteredData].sort((a, b) => a.price - b.price);
+        break;
+      case options[3]:
+        filteredData = [...filteredData].sort((a, b) => b.price - a.price);
+        break;
+      case options[4]:
+        filteredData = [...filteredData].sort(
+          (a, b) => b.rating.rate - a.rating.rate
+        );
+        break;
+      case options[5]:
+        filteredData = [...filteredData].sort(
+          (a, b) => a.rating.rate - b.rating.rate
+        );
+        break;
+      default:
+        break;
+    }
+
+    setDataFiltered(filteredData);
+  }, [data, selectedCategory, selectedSortOption]);
 
   function updateQuantity(arr, index, quantity, input) {
     if (isNaN(quantity) || (input && quantity === '')) {
@@ -52,26 +111,56 @@ function Shop() {
     setData(newArr);
   }
 
+  function getCategories() {
+    let categories = new Set();
+    data.map((product) => {
+      categories.add(
+        product.category.charAt(0).toUpperCase() + product.category.slice(1)
+      );
+    });
+    categories = [...categories];
+    categories.sort();
+    categories.unshift('None');
+
+    return categories;
+  }
+
   return (
     <>
       <h1>this is ShopPage!</h1>
+      <div className="filters">
+        {data && (
+          <OptionSelector
+            default="None"
+            name="Category: "
+            options={getCategories()}
+            filter={setSelectedCategory}
+          />
+        )}
+        {data && (
+          <OptionSelector
+            default={options[0]}
+            name="Sort by: "
+            options={options}
+            filter={setSelectedSortOption}
+          />
+        )}
+      </div>
       <div className="products">
-        {data &&
-          data.map((product) => {
-            return (
-              <Card
-                key={product.id}
-                id={product.id}
-                title={product.title}
-                img={product.image}
-                desc={product.description}
-                quantity={product.quantity}
-                price={product.price}
-                handleAddToCart={handleAddToCart}
-                handleQuantity={handleQuantity}
-              />
-            );
-          })}
+        {dataFiltered &&
+          dataFiltered.map((product) => (
+            <Card
+              key={product.id}
+              id={product.id}
+              title={product.title}
+              img={product.image}
+              desc={product.description}
+              quantity={product.quantity}
+              price={product.price}
+              handleAddToCart={handleAddToCart}
+              handleQuantity={handleQuantity}
+            />
+          ))}
       </div>
     </>
   );
