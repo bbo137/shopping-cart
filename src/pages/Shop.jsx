@@ -1,7 +1,15 @@
-import Card from '../components/Card';
-import OptionSelector from '../components/OptionSelector';
+// React dependencies
 import { useContext, useEffect, useState } from 'react';
+
+// Components
+import Card from '../components/card/Card';
+import OptionSelector from '../components/inputs/OptionSelector';
+
+// Contexts
 import { DataContext, CartContext } from '../App';
+
+// Styles
+import styles from './styles/Shop.module.css';
 
 const options = [
   'None',
@@ -55,7 +63,7 @@ function Shop() {
   useEffect(() => {
     if (!data) return;
     let filteredData = [...data];
-    if (selectedCategory !== 'None') {
+    if (selectedCategory !== 'Any') {
       filteredData = filteredData.filter(
         (product) => product.category === selectedCategory.toLowerCase()
       );
@@ -120,18 +128,17 @@ function Shop() {
     });
     categories = [...categories];
     categories.sort();
-    categories.unshift('None');
+    categories.unshift('Any');
 
     return categories;
   }
 
   return (
     <>
-      <h1>this is ShopPage!</h1>
-      <div className="filters">
+      <div className={styles.filters}>
         {data && (
           <OptionSelector
-            default="None"
+            default="Any"
             name="Category: "
             options={getCategories()}
             filter={setSelectedCategory}
@@ -146,22 +153,25 @@ function Shop() {
           />
         )}
       </div>
-      <div className="products">
-        {dataFiltered &&
-          dataFiltered.map((product) => (
-            <Card
-              key={product.id}
-              id={product.id}
-              title={product.title}
-              img={product.image}
-              desc={product.description}
-              quantity={product.quantity}
-              price={product.price}
-              handleAddToCart={handleAddToCart}
-              handleQuantity={handleQuantity}
-            />
-          ))}
-      </div>
+      {dataFiltered && (
+        <div className={styles.container}>
+          {dataFiltered &&
+            dataFiltered.map((product) => (
+              <Card
+                key={product.id}
+                id={product.id}
+                title={product.title}
+                img={product.image}
+                desc={product.description}
+                rating={product.rating}
+                quantity={product.quantity}
+                price={product.price}
+                handleAddToCart={handleAddToCart}
+                handleQuantity={handleQuantity}
+              />
+            ))}
+        </div>
+      )}
     </>
   );
 }

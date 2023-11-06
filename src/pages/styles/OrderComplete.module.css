@@ -1,0 +1,33 @@
+.background {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--light-cart-background);
+}
+
+.container {
+  display: flex;
+  min-width: 80%;
+  flex-flow: column nowrap;
+  align-items: center;
+  padding: 2rem;
+  border: 4px solid;
+  border-color: var(--light-hr-color);
+  border-radius: 12px;
+  border-top-color: var(--light-background);
+  border-bottom-color: var(--light-hr-color);
+  background-color: var(--light-background);
+}
+
+@media (prefers-color-scheme: dark) {
+  .background {
+    background-color: var(--dark-cart-background);
+  }
+
+  .container {
+    border-top-color: var(--dark-background);
+    border-bottom-color: var(--dark-hr-color);
+    background-color: var(--dark-background);
+  }
+}

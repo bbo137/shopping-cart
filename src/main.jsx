@@ -1,13 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+// External dependencies
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import App from './App.jsx'
-import Home from './pages/Home.jsx'
-import Shop from './pages/Shop.jsx'
-import ErrorPage from './pages/Error-page.jsx'
+// Pages
+import App from './App.jsx';
+import Home from './pages/Home.jsx';
+import Shop from './pages/Shop.jsx';
+import OrderComplete from './pages/OrderComplete.jsx';
+import ErrorPage from './pages/Error-page.jsx';
 
-import './index.css'
+// Styles
+import './index.css';
 
 const router = createBrowserRouter([
   {
@@ -23,9 +27,13 @@ const router = createBrowserRouter([
         path: "shop",
         element: <Shop />,
       },
-    ]
+    ],
   },
-
+  {
+    path: "/order-confirm",
+    element: <OrderComplete />,
+    errorElement: <ErrorPage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

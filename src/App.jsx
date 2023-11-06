@@ -1,7 +1,14 @@
+// React dependencies
 import { useState, createContext, useEffect } from 'react';
+
+// Router
 import { Navigate, Outlet } from 'react-router-dom';
-import NavBar from './components/NavBar';
-import Cart from './components/Cart';
+
+// Components
+import NavBar from './components/navbar/NavBar';
+import Cart from './components/cart/Cart';
+
+// Styles
 import './App.css';
 
 export const DataContext = createContext();
@@ -11,10 +18,14 @@ function App() {
   const [data, setData] = useState(null);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [slideOutReady, setSlideOutReady] = useState(false);
 
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     setCart(JSON.parse(savedCart));
+    if (savedCart === null) {
+      setCart([]);
+    }
   }, []);
 
   function updateQuantity(arr, index, quantity, input) {
@@ -61,6 +72,19 @@ function App() {
     localStorage.setItem('cart', JSON.stringify(newArr));
   }
 
+  function toggleCart() {
+    console.log('hi');
+    if (!isCartOpen) {
+      setIsCartOpen(!isCartOpen);
+      setSlideOutReady(!slideOutReady);
+    } else {
+      setSlideOutReady(!slideOutReady);
+      setTimeout(() => {
+        setIsCartOpen(!isCartOpen);
+      }, 500);
+    }
+  }
+
   return (
     <DataContext.Provider value={[data, setData]}>
       <CartContext.Provider
@@ -71,19 +95,27 @@ function App() {
           setIsCartOpen,
           handleAddToCart,
           deleteFromCart,
+          toggleCart,
         }}
       >
         <Navigate to="/home" replace={true} />
         <NavBar />
-        {isCartOpen && (
-          <div className="cart">
-            <Cart
-              cart={cart}
-              deleteFromCart={deleteFromCart}
-              handleAddToCart={handleAddToCart}
-            />
+        <div className="modal">
+          <div
+            className={`shadow ${slideOutReady ? 'open' : 'close'}`}
+            onClick={() => toggleCart()}
+          ></div>
+          <div className={`cart ${slideOutReady ? 'open' : 'close'}`}>
+            {isCartOpen && (
+              <Cart
+                slideOutReady={slideOutReady}
+                cart={cart}
+                deleteFromCart={deleteFromCart}
+                handleAddToCart={handleAddToCart}
+              />
+            )}
           </div>
-        )}
+        </div>
         <div id="content">
           <Outlet />
         </div>

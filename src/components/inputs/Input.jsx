@@ -1,4 +1,8 @@
+// External dependencies
 import PropTypes from 'prop-types';
+
+// Styles
+import styles from './Input.module.css';
 
 function Input(props) {
   function handleClickDecrease() {
@@ -35,11 +39,12 @@ function Input(props) {
   }
 
   return (
-    <>
-      <button onClick={handleClickDecrease} className="button reduce">
+    <div className={`${props.className} ${styles.quantity}`}>
+      <button onClick={handleClickDecrease} className={`${styles.btn} ${styles.reduce}`}>
         -
       </button>
       <input
+        className={styles.input}
         onChange={handleChange}
         onBlur={handleBlur}
         onFocus={handleFocus}
@@ -49,21 +54,17 @@ function Input(props) {
         pattern="[0-9]*"
         min="0"
         value={props.quantity}
-        style={{
-          height: 1.5 + 'rem',
-          width: 50 + 'px',
-          WebkitAppearance: 'none',
-        }}
       ></input>
-      <button onClick={handleClickIncrease} className="button add">
+      <button onClick={handleClickIncrease} className={`${styles.btn} ${styles.add}`}>
         +
       </button>
-    </>
+    </div>
   );
 }
 
 Input.propTypes = {
   id: PropTypes.number.isRequired,
+  className: PropTypes.string,
   quantity: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   handleClickDecrease: PropTypes.func,
   handleChange: PropTypes.func,

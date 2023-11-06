@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
+import styles from './Input.module.css'
+
 function OptionSelector(props) {
   const [selected, setSelected] = useState(props.default);
 
@@ -14,12 +16,13 @@ function OptionSelector(props) {
   });
 
   return (
-    <>
-      <label htmlFor="props.name">{props.name}</label>
+    <div>
+      <label className={styles.label} htmlFor="props.name">{props.name}</label>
       <select
+        id={props.name}
+        className={styles.selectInput}
         onChange={handleChange}
         value={selected}
-        id={props.name}
         name={props.name}
       >
         {props.options.map((option) => {
@@ -30,7 +33,7 @@ function OptionSelector(props) {
           );
         })}
       </select>
-    </>
+    </div>
   );
 }
 

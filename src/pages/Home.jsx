@@ -1,9 +1,17 @@
+// Styles
+import styles from './styles/Home.module.css'
+
 function Home() {
 
   return (
-    <>
-      <h1>this is HomePage!</h1>
-    </>
+    <div className={styles.content}>
+      <div className={styles.paragraph}>
+      <h1>Welcome to Foren&apos;s shop!</h1>
+      <p>Feel free to take a look at the shop and choose the best product for you.</p>
+      <p>Vivon</p>
+      </div>
+      
+    </div>
   )
 }
 

@@ -1,0 +1,37 @@
+.content {
+  position: relative;
+  z-index: -1;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  background-color: var(--light-navbar-background);
+  background-image: url(../../assets/pexels-tirachard-kumtanom-601169.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.content::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: inherit;
+  content: "";
+  filter: blur(2px);
+}
+
+.paragraph {
+  position: relative;
+  padding: 2rem 6rem;
+  margin: 0 8rem;
+  background-color: var(--light-home-background);
+  line-height: 180%;
+}
+
+@media (prefers-color-scheme: dark) {
+  .paragraph {
+    background-color: var(--dark-home-background);
+  }
+}

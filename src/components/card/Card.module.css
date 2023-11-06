@@ -1,0 +1,75 @@
+.card {
+  display: grid;
+  border-radius: 16px;
+  background-color: var(--card-background);
+  grid-template-rows: auto 1fr;
+  place-items: center;
+}
+
+.flex-title {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.title {
+  margin: 1.5rem 2rem 2rem;
+  font-size: 1.3rem;
+}
+
+.img {
+  display: block;
+  max-width: 250px;
+  max-height: 250px;
+  box-sizing: border-box;
+  place-self: center;
+}
+
+.flex-content {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-rows: 1fr 100px;
+}
+
+.description {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 4rem;
+  font-size: 80%;
+  text-align: start;
+}
+
+.star-icons {}
+
+.cart-icon {
+  display: inline-flex;
+  margin: 0 0.5rem;
+  vertical-align: center;
+}
+
+.price {}
+
+.btn {
+  display: flex;
+  width: 60%;
+  align-content: center;
+  justify-content: center;
+  border-width: 2px;
+  margin-bottom: 0.5rem;
+  background-color: var(--dark-nav-link-background);
+  color: var(--light-btn-color);
+  justify-self: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    color: var(--dark-link-background);
+    color-scheme: light dark;
+  }
+
+  .btn {
+    color: var(--dark-btn-color);
+  }
+}
