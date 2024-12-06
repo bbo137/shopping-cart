@@ -8,7 +8,7 @@ A single-page web application developed using React to practice concepts like `u
 - **Shopping Page:**
   - Browse products.
   - Filter products by category.
-  - Sort products by name, price, or rating.
+  - Sort products by ``name``, ``price``, or ``rating``.
   - Add multiple items to the cart.
 - **Cart:**
   - Accessible from both the home and shopping pages.
